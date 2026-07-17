@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Philosophers</h2>
+  <% if is_administrator? %>
+    <%= link_to "Add New Philosopher", new_philosopher_path, class: "btn btn-success" %>
+  <% end %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th><th>Name</th><th>Born</th><th>Died</th><th>Quotes</th>
+      <% if is_administrator? %><th>Actions</th><% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @philosophers.each_with_index do |philosopher, idx| %>
+      <tr>
+        <td><%= idx + 1 %></td>
+        <td><%= philosopher.display_name %></td>
+        <td><%= philosopher.byear %></td>
+        <td><%= philosopher.dyear %></td>
+        <td><%= philosopher.quotes.count %></td>
+        <% if is_administrator? %>
+          <td>
+            <%= link_to "View", philosopher_path(philosopher), class: "btn btn-sm btn-outline-secondary" %>
+            <%= link_to "Edit", edit_philosopher_path(philosopher), class: "btn btn-sm btn-outline-primary" %>
+            <%= button_to "Delete", philosopher_path(philosopher), method: :delete,
+                          form: { data: { turbo_confirm: "Delete philosopher '#{philosopher.display_name}'?" }, style: "display:inline;" },
+                          class: "btn btn-sm btn-outline-danger" %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

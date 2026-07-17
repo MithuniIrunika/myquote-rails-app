@@ -1,0 +1,20 @@
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+  <div class="container py-3">
+    <h1 class="display-5 fw-bold">Welcome to MyQuote</h1>
+    <p class="col-md-10 fs-5">Collect and share your favourite philosophical quotes and discover those shared by others.</p>
+    <% if !logged_in? %>
+      <%= link_to "Sign Up", new_user_path, class: "btn btn-primary btn-lg me-2" %>
+      <%= link_to "Sign In", login_path,    class: "btn btn-outline-primary btn-lg" %>
+    <% end %>
+  </div>
+</div>
+
+<h2 class="mb-3">10 Most Recent Public Quotes</h2>
+
+<% if @recent_quotes.empty? %>
+  <p class="text-muted">No public quotes have been added yet.</p>
+<% else %>
+  <% @recent_quotes.each do |quote| %>
+    <%= render "quotes/quote", quote: quote %>
+  <% end %>
+<% end %>

@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <%= link_to "MyQuote", root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><%= link_to "Home",   root_path,   class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Search", search_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "About",  about_path,  class: "nav-link" %></li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <% if !logged_in? %>
+          <li class="nav-item"><%= link_to "Sign Up", new_user_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Sign In", login_path,    class: "nav-link" %></li>
+        <% end %>
+
+        <% if logged_in? && !is_administrator? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <%= session[:fname] || current_user.fname %> (User)
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><%= link_to "My Account",                userhome_path,                class: "dropdown-item" %></li>
+              <li><%= link_to "Update Details / Password", edit_user_path(current_user), class: "dropdown-item" %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "My Quotes",                 your_quotes_path,             class: "dropdown-item" %></li>
+              <li><%= link_to "Add New Quote",             new_quote_path,               class: "dropdown-item" %></li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if logged_in? && is_administrator? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <%= session[:fname] || current_user.fname %> (Admin)
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><%= link_to "Admin Home",          admin_path,         class: "dropdown-item" %></li>
+              <li><%= link_to "Manage Users",        users_path,         class: "dropdown-item" %></li>
+              <li><%= link_to "Manage Philosophers", philosophers_path,  class: "dropdown-item" %></li>
+              <li><%= link_to "Manage Categories",   categories_path,    class: "dropdown-item" %></li>
+              <li><%= link_to "All Quotes",          quotes_path,        class: "dropdown-item" %></li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if logged_in? %>
+          <li class="nav-item">
+            <%= button_to "Sign Out", logout_path, method: :delete, class: "btn btn-link nav-link", form: { style: "display:inline;" } %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

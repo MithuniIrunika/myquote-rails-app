@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <h2><%= @philosopher.display_name %> <%= @philosopher.life_span %></h2>
+    <% if @philosopher.bio.present? %><p><%= @philosopher.bio %></p><% end %>
+
+    <h4 class="mt-3">Quotes by this philosopher</h4>
+    <% quotes = is_administrator? ? @philosopher.quotes : @philosopher.quotes.public_quotes %>
+    <% if quotes.empty? %>
+      <p class="text-muted">No quotes by this philosopher yet.</p>
+    <% else %>
+      <% quotes.each do |q| %>
+        <%= render "quotes/quote", quote: q %>
+      <% end %>
+    <% end %>
+
+    <%= link_to "Back to philosophers", philosophers_path, class: "btn btn-link" %>
+  </div>
+</div>

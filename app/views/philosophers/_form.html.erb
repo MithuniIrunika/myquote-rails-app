@@ -1,0 +1,47 @@
+<%= form_with(model: philosopher, local: true) do |f| %>
+  <% if philosopher.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(philosopher.errors.count, "error") %> prohibited this philosopher from being saved:</h5>
+      <ul class="mb-0">
+        <% philosopher.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group mb-3">
+    <%= f.label :fname, "First Name", class: "form-label" %>
+    <%= f.text_field :fname, class: "form-control" %>
+  </div>
+  <div class="form-group mb-3">
+    <%= f.label :lname, "Last Name (optional)", class: "form-label" %>
+    <%= f.text_field :lname, class: "form-control" %>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <%= f.label :byear, "Birth Year (optional)", class: "form-label" %>
+        <%= f.text_field :byear, class: "form-control", placeholder: "e.g. 384 BCE or 1844" %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <%= f.label :dyear, "Death Year (optional)", class: "form-label" %>
+        <%= f.text_field :dyear, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group mb-3">
+    <%= f.label :bio, "Short Biography (optional)", class: "form-label" %>
+    <%= f.text_area :bio, rows: 3, class: "form-control" %>
+  </div>
+
+  <%= f.submit (philosopher.persisted? ? "Update Philosopher" : "Add Philosopher"), class: "btn btn-primary" %>
+
+  <%# Cancel sends admins back to the philosopher list, but standard users
+      back to the new-quote form (since that's where they came from). %>
+  <%= link_to "Cancel",
+              (is_administrator? ? philosophers_path : new_quote_path),
+              class: "btn btn-link" %>
+<% end %>

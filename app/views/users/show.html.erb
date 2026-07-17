@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">User Details</h2>
+
+    <dl class="row">
+      <dt class="col-sm-3">First Name</dt><dd class="col-sm-9"><%= @user.fname %></dd>
+      <dt class="col-sm-3">Last Name</dt><dd class="col-sm-9"><%= @user.lname %></dd>
+      <dt class="col-sm-3">Email</dt><dd class="col-sm-9"><%= @user.email %></dd>
+      <dt class="col-sm-3">Password</dt><dd class="col-sm-9"><span class="text-danger">[ENCRYPTED]</span></dd>
+      <dt class="col-sm-3">Account Type</dt>
+      <dd class="col-sm-9">
+        <% if @user.is_admin %>
+          <span class="badge text-bg-primary">Administrator</span>
+        <% else %>
+          <span class="badge text-bg-secondary">Standard User</span>
+        <% end %>
+      </dd>
+      <dt class="col-sm-3">Status</dt><dd class="col-sm-9"><%= @user.status %></dd>
+      <dt class="col-sm-3">Quotes Owned</dt><dd class="col-sm-9"><%= @user.quotes.count %></dd>
+    </dl>
+
+    <%= link_to "Edit User", edit_user_path(@user), class: "btn btn-primary" %>
+    <% if is_administrator? %>
+      <%= link_to "Back to Users", users_path, class: "btn btn-link" %>
+    <% else %>
+      <%= link_to "Back", userhome_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+</div>

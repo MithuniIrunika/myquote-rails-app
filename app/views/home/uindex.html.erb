@@ -1,0 +1,24 @@
+<h2>Standard User Dashboard</h2>
+<p class="lead">Hello, <strong><%= current_user.fname %> <%= current_user.lname %></strong>. Welcome to MyQuote.</p>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Your Quotes</h5>
+        <p class="card-text">You have collected <strong><%= @my_quote_count %></strong> quote<%= @my_quote_count == 1 ? "" : "s" %>.</p>
+        <%= link_to "View My Quotes", your_quotes_path, class: "btn btn-primary me-2" %>
+        <%= link_to "Add New Quote",  new_quote_path,   class: "btn btn-success" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Account</h5>
+        <p class="card-text">Update your personal details or change your password.</p>
+        <%= link_to "Edit Your Account Details", edit_user_path(current_user), class: "btn btn-outline-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

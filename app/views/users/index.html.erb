@@ -1,0 +1,43 @@
+<h2>Manage Users</h2>
+<p class="text-muted">All users in the system. Click a user to view, edit or delete.</p>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    <% @users.each_with_index do |user, idx| %>
+      <tr>
+        <td><%= idx + 1 %></td>
+        <td><%= user.full_name %></td>
+        <td><%= user.email %></td>
+        <td>
+          <% if user.is_admin %>
+            <span class="badge text-bg-primary">Admin</span>
+          <% else %>
+            <span class="badge text-bg-secondary">Standard</span>
+          <% end %>
+        </td>
+        <td>
+          <% case user.status
+             when "Active" %>
+            <span class="badge text-bg-success"><%= user.status %></span>
+          <% when "Suspended" %>
+            <span class="badge text-bg-warning"><%= user.status %></span>
+          <% when "Banned" %>
+            <span class="badge text-bg-danger"><%= user.status %></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "View", user_path(user),      class: "btn btn-sm btn-outline-secondary" %>
+          <%= link_to "Edit", edit_user_path(user), class: "btn btn-sm btn-outline-primary" %>
+          <% unless user.id == current_user.id %>
+            <%= button_to "Delete", user_path(user), method: :delete,
+                          form: { data: { turbo_confirm: "Delete user '#{user.full_name}' and all their quotes?" }, style: "display:inline;" },
+                          class: "btn btn-sm btn-outline-danger" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

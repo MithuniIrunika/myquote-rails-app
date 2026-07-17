@@ -1,0 +1,16 @@
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <% if is_administrator? && current_user.id != @user.id %>
+          <h2 class="card-title mb-3">Edit User Details</h2>
+          <p class="text-muted">As administrator you may change this user's status or administrator role.</p>
+        <% else %>
+          <h2 class="card-title mb-3">Update Your Details</h2>
+          <p class="text-muted">Change your personal details or set a new password.</p>
+        <% end %>
+        <%= render "form", user: @user %>
+      </div>
+    </div>
+  </div>
+</div>

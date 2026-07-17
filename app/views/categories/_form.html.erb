@@ -1,0 +1,19 @@
+<%= form_with(model: category, local: true) do |f| %>
+  <% if category.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h5>
+      <ul class="mb-0">
+        <% category.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group mb-3">
+    <%= f.label :catname, "Category Name", class: "form-label" %>
+    <%= f.text_field :catname, class: "form-control", placeholder: "e.g. Ethics, Metaphysics, Logic" %>
+  </div>
+  <%= f.submit (category.persisted? ? "Update Category" : "Add Category"), class: "btn btn-primary" %>
+  <%= link_to "Cancel", categories_path, class: "btn btn-link" %>
+<% end %>

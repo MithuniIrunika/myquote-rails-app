@@ -1,0 +1,27 @@
+<h2>Search Quotes</h2>
+
+<%= form_with url: search_path, method: :get, local: true, class: "row g-3 mb-4" do |f| %>
+  <div class="col-md-5">
+    <%= label_tag :keyword, "Keyword", class: "form-label" %>
+    <%= text_field_tag :keyword, @keyword, placeholder: "Enter a word from the quote text", class: "form-control" %>
+  </div>
+  <div class="col-md-5">
+    <%= label_tag :category_id, "Category", class: "form-label" %>
+    <%= select_tag :category_id,
+                   options_from_collection_for_select(@categories, :id, :catname, @selected_category_id),
+                   include_blank: "Any category", class: "form-select" %>
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <%= submit_tag "Search", class: "btn btn-primary w-100" %>
+  </div>
+<% end %>
+
+<h4>Results (<%= @quotes.size %>)</h4>
+
+<% if @quotes.empty? %>
+  <p class="text-muted">No quotes matched your search. Try a different keyword or category.</p>
+<% else %>
+  <% @quotes.each do |quote| %>
+    <%= render "quotes/quote", quote: quote %>
+  <% end %>
+<% end %>

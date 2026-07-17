@@ -1,0 +1,12 @@
+<h2><%= @category.catname %></h2>
+<p class="text-muted">Quotes in this category</p>
+
+<% if @quotes.empty? %>
+  <p class="text-muted">No quotes available in this category.</p>
+<% else %>
+  <% @quotes.each do |quote| %>
+    <%= render "quotes/quote", quote: quote %>
+  <% end %>
+<% end %>
+
+<%= link_to "Back to categories", categories_path, class: "btn btn-link" %>

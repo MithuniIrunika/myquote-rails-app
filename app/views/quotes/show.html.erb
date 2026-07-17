@@ -1,0 +1,52 @@
+<div class="card shadow-sm quote-card">
+  <div class="card-body">
+    <blockquote class="blockquote">
+      <p class="display-6">"<%= @quote.qtext %>"</p>
+      <footer class="blockquote-footer mt-3">
+        <strong><%= @quote.philosopher&.display_name.presence || "Anonymous" %></strong>
+        <%= @quote.philosopher&.life_span %>
+        <% if @quote.qyear.present? %> - published <%= @quote.qyear %><% end %>
+      </footer>
+    </blockquote>
+
+    <% if @quote.philosopher&.bio.present? %>
+      <p><strong>About the philosopher:</strong> <%= @quote.philosopher.bio %></p>
+    <% end %>
+
+    <% if @quote.qcom.present? %>
+      <div class="alert alert-light">
+        <strong>Owner's comment:</strong> <%= @quote.qcom %>
+      </div>
+    <% end %>
+
+    <p>
+      <strong>Categories:</strong>
+      <% @quote.categories.each do |cat| %>
+        <span class="badge text-bg-info"><%= cat.catname %></span>
+      <% end %>
+    </p>
+
+    <p>
+      <strong>Visibility:</strong>
+      <% if @quote.ispublic %>
+        <span class="badge text-bg-success">Public</span>
+      <% else %>
+        <span class="badge text-bg-secondary">Private</span>
+      <% end %>
+    </p>
+
+    <p class="text-muted">
+      Added by <strong><%= @quote.user&.fname %></strong>
+      on <%= @quote.created_at.strftime("%d %B %Y") %>
+    </p>
+
+    <% if logged_in? && (current_user.id == @quote.user_id || is_administrator?) %>
+      <%= link_to "Edit", edit_quote_path(@quote), class: "btn btn-primary" %>
+      <%= button_to "Delete", quote_path(@quote), method: :delete,
+                    form: { data: { turbo_confirm: "Delete this quote?" }, style: "display:inline;" },
+                    class: "btn btn-danger" %>
+    <% end %>
+
+    <%= link_to "Back", :back, class: "btn btn-link" %>
+  </div>
+</div>

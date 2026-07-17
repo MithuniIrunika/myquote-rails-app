@@ -1,0 +1,59 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <% if user.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(user.errors.count, "error") %> prevented this user from being saved:</h5>
+      <ul class="mb-0">
+        <% user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% is_admin_editing_other = logged_in? && is_administrator? && current_user.id != user.id %>
+
+  <div class="form-group mb-3">
+    <%= form.label :fname, "First Name", class: "form-label" %>
+    <%= form.text_field :fname, class: "form-control", readonly: is_admin_editing_other %>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= form.label :lname, "Last Name", class: "form-label" %>
+    <%= form.text_field :lname, class: "form-control", readonly: is_admin_editing_other %>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= form.label :email, "Email Address", class: "form-label" %>
+    <%= form.email_field :email, class: "form-control", readonly: is_admin_editing_other %>
+  </div>
+
+  <% unless is_admin_editing_other %>
+    <div class="form-group mb-3">
+      <%= form.label :password, (user.persisted? ? "New Password (leave blank to keep current)" : "Password"), class: "form-label" %>
+      <%= form.password_field :password, class: "form-control" %>
+    </div>
+    <div class="form-group mb-3">
+      <%= form.label :password_confirmation, "Confirm Password", class: "form-label" %>
+      <%= form.password_field :password_confirmation, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <% if logged_in? && is_administrator? %>
+    <div class="form-group mb-3">
+      <%= form.label :status, "Account Status", class: "form-label" %>
+      <%= form.select :status, %w[Active Suspended Banned], { selected: user.status }, class: "form-select" %>
+    </div>
+    <div class="form-check mb-3">
+      <%= form.check_box :is_admin, class: "form-check-input" %>
+      <%= form.label :is_admin, "Administrator Role", class: "form-check-label" %>
+    </div>
+  <% else %>
+    <%= form.hidden_field :is_admin, value: user.is_admin %>
+    <%= form.hidden_field :status,   value: user.status || "Active" %>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.submit (user.persisted? ? "Update" : "Sign Up"), class: "btn btn-primary" %>
+    <%= link_to "Cancel", (logged_in? ? (is_administrator? ? users_path : userhome_path) : root_path), class: "btn btn-link" %>
+  </div>
+<% end %>
